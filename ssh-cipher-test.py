@@ -1,10 +1,11 @@
 #!/usr/bin/python
 
 import paramiko
-
 from os import urandom, unlink
 from tempfile import NamedTemporaryFile
 from time import time
+
+from credenciales import host, port, username, password  # no lo subo a git
 
 print "Creando archivo temporal..."
 temporal = NamedTemporaryFile(delete=False)
@@ -13,8 +14,8 @@ temporal.write(urandom(tamanio))
 print "Creado: %s" % temporal.name
 
 print "Creando transporte..."
-transport = paramiko.Transport(('localhost', 22))
-transport.connect(username='dvinazza', password='saladmin.portenio2011')
+transport = paramiko.Transport((host, port))
+transport.connect(username=username, password=password)
 
 ciphers = transport.get_security_options()._get_ciphers()
 
