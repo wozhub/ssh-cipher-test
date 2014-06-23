@@ -10,6 +10,7 @@ from credenciales import host, port, username, password  # no lo subo a git
 print "Creando archivo temporal..."
 temporal = NamedTemporaryFile(delete=False)
 tamanio = 1024*1024 * 100  # 100mb
+#tamanio = 1024*1024 * 1024  # 1gb
 temporal.write(urandom(tamanio))
 print "Creado: %s" % temporal.name
 
@@ -33,7 +34,6 @@ for c in ciphers:
         sftp.remove('/tmp/%s' % c)
     except:
         pass
-
 
 print "Borrando archivo temporal..."
 unlink(temporal.name)
