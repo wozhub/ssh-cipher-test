@@ -9,20 +9,25 @@ from credenciales import host, port, username, password  # no lo subo a git
 
 print "Creando archivo temporal..."
 temporal = NamedTemporaryFile(delete=False)
+#tamanio = 1024*1024 * 10  # 10mb
 tamanio = 1024*1024 * 100  # 100mb
 #tamanio = 1024*1024 * 1024  # 1gb
 temporal.write(urandom(tamanio))
 print "Creado: %s" % temporal.name
 
-print "Creando transporte..."
+print "Consultando Ciphers Disponibles..."
 transport = paramiko.Transport((host, port))
 transport.connect(username=username, password=password)
-
 ciphers = transport.get_security_options()._get_ciphers()
 
 for c in ciphers:
     print "Probando %s" % c
+
+    transport = paramiko.Transport((host, port))
     transport.get_security_options().ciphers = [c, ]
+    transport.connect(username=username, password=password)
+
+    #print transport
 
     sftp = paramiko.SFTPClient.from_transport(transport)
 
