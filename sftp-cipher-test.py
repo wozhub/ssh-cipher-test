@@ -22,7 +22,7 @@ ciphers = transport.get_security_options()._get_ciphers()
 
 for c in ciphers:
     print "Probando %s" % c
-    destino = '/tmp/%s' % c  #armo la ruta donde escribir
+    destino = '/tmp/%s' % c  # armo la ruta donde escribir
 
     try:
         transport = paramiko.Transport((host, port))
@@ -31,10 +31,20 @@ for c in ciphers:
 
         sftp = paramiko.SFTPClient.from_transport(transport)
 
+        # envio
         inicio = time()
         sftp.put(temporal.name, destino)
         tiempo = time() - inicio
-        print "La transferencia tomo ", tiempo
+        print "La transferencia (IDA) tomo ", tiempo
+
+        # recepcion
+        inicio = time()
+        sftp.get(destino, temporal.name+"_vuelta")
+        tiempo = time() - inicio
+        print "La transferencia (VUELTA) tomo ", tiempo
+
+        # limpieza
+        unlink(temporal.name+"_vuelta")
         sftp.remove(destino)
     except:
         pass
