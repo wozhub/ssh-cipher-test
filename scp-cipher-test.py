@@ -33,10 +33,19 @@ for c in ciphers:
 
         scp = SCPClient(transport)
 
+        #ida
         inicio = time()
         scp.put(temporal.name, destino)
         tiempo = time() - inicio
-        print "La transferencia tomo ", tiempo
+        print "La transferencia (IDA) tomo ", tiempo
+
+        #vuelta
+        inicio = time()
+        scp.get(destino, temporal.name+"_vuelta")
+        tiempo = time() - inicio
+        print "La transferencia (VUELTA) tomo ", tiempo
+
+        unlink(temporal.name+"_vuelta")
         # sftp.remove(destino)
     except:
         pass
