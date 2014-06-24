@@ -23,23 +23,21 @@ ciphers = transport.get_security_options()._get_ciphers()
 
 for c in ciphers:
     print "Probando %s" % c
-
-    transport = paramiko.Transport((host, port))
-    transport.get_security_options().ciphers = [c, ]
-    transport.connect(username=username, password=password)
-
-    #print transport
-
-    scp = SCPClient(transport)
-
-    destino = '/tmp/%s' % c  #armo la ruta donde escribir
+    destino = '/tmp/%s' % c  # armo la ruta donde escribir
 
     try:
+        transport = paramiko.Transport((host, port))
+        transport.get_security_options().ciphers = [c, ]
+        transport.connect(username=username, password=password)
+        # print transport
+
+        scp = SCPClient(transport)
+
         inicio = time()
         scp.put(temporal.name, destino)
         tiempo = time() - inicio
         print "La transferencia tomo ", tiempo
-        #sftp.remove(destino)
+        # sftp.remove(destino)
     except:
         pass
 

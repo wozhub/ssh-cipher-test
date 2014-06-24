@@ -22,18 +22,15 @@ ciphers = transport.get_security_options()._get_ciphers()
 
 for c in ciphers:
     print "Probando %s" % c
-
-    transport = paramiko.Transport((host, port))
-    transport.get_security_options().ciphers = [c, ]
-    transport.connect(username=username, password=password)
-
-    #print transport
-
-    sftp = paramiko.SFTPClient.from_transport(transport)
-
     destino = '/tmp/%s' % c  #armo la ruta donde escribir
 
     try:
+        transport = paramiko.Transport((host, port))
+        transport.get_security_options().ciphers = [c, ]
+        transport.connect(username=username, password=password)
+
+        sftp = paramiko.SFTPClient.from_transport(transport)
+
         inicio = time()
         sftp.put(temporal.name, destino)
         tiempo = time() - inicio
